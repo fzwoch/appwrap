@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io"
 	"os"
@@ -9,9 +10,19 @@ import (
 	"text/template"
 )
 
+var version = "0.1.0"
+
 func main() {
+	flag.Usage = func() {
+		fmt.Fprintf(flag.CommandLine.Output(), "AppWrap - Wrap binaries into minimal macOS application bundles. (%s)\n", version)
+		fmt.Fprintf(flag.CommandLine.Output(), "Copyright (C) 2025 Florian Zwoch <fzwoch@gmail.com>\n")
+		fmt.Fprintf(flag.CommandLine.Output(), "\n")
+		fmt.Fprintf(flag.CommandLine.Output(), "Usage: %s <path/to/some/binary/>\n", os.Args[0])
+	}
+	flag.Parse()
+
 	if len(os.Args) != 2 {
-		fmt.Println("Usage:", os.Args[0], "<binary>")
+		flag.Usage()
 		os.Exit(1)
 	}
 
@@ -23,6 +34,7 @@ func main() {
 	exe := filepath.Base(bin)
 	app := exe + ".app"
 	_, err = os.Stat(bin)
+
 	if os.IsNotExist(err) {
 		fmt.Println(bin, "does not exist")
 		os.Exit(1)
