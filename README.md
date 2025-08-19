@@ -17,7 +17,7 @@ $ appwrap /path/to/some/binary
 will create:
 
 ```
-  binary.app/
+binary.app/
 └── Contents
     ├── Info.plist
     └── MacOS
