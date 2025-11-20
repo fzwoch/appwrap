@@ -59,7 +59,9 @@ func main() {
 	}
 	defer r.Close()
 
-	w, err := os.Create(path.Join(app, "Contents", "MacOS", exe))
+	file := path.Join(app, "Contents", "MacOS", exe)
+
+	w, err := os.Create(file)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -67,6 +69,12 @@ func main() {
 	defer w.Close()
 
 	_, err = io.Copy(w, r)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	err = os.Chmod(file, 0755)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
